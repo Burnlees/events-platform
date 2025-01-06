@@ -2,6 +2,8 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { db } from "~/server/db";
+import { users } from "~/server/db/schema";
 
 export async function POST(req: Request) {
   const SIGNING_SECRET = env.SIGNING_SECRET;
@@ -48,12 +50,32 @@ export async function POST(req: Request) {
     });
   }
 
-  // Do something with payload
-  // For this guide, log payload to console
-  const { id } = evt.data;
-  const eventType = evt.type;
-  console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
-  console.log("Webhook payload:", body);
+  if (evt.type === "user.created") {
+    try {
+      const id = evt.data.id;
+      const email = evt.data.email_addresses[0]?.email_address;
+
+      if (!id || !email) {
+        throw new Error("Missing required user fields: 'id' or 'email'");
+      }
+
+      await db.insert(users).values({
+        id,
+        email,
+        username: evt.data.username || null,
+        createdAt: new Date(evt.data.created_at),
+        updatedAt: new Date(evt.data.updated_at),
+      });
+      console.log("User inserted successfully");
+    } catch (err) {
+      console.error("Error inserting user:", err);
+    }
+  }
+
+//   const { id } = evt.data;
+//   const eventType = evt.type;
+//   console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
+//   console.log("Webhook payload:", body);
 
   return new Response("Webhook received", { status: 200 });
 }

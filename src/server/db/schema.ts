@@ -42,3 +42,21 @@ export const events = createTable(
     nameIndex: index("name_idx").on(example.name),
   }),
 );
+
+export const users = createTable(
+  "user",
+  {
+    id: varchar("id").primaryKey(),
+    email: varchar("email", { length: 256 }).notNull(),
+    username: varchar("username", { length: 256 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+      () => new Date(),
+    ),
+  },
+  (example) => ({
+    emailIndex: index("email_idx").on(example.email),
+  }),
+);

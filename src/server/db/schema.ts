@@ -1,23 +1,13 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-
-import { count } from "console";
 import { sql } from "drizzle-orm";
 import {
   index,
   integer,
   pgTableCreator,
   timestamp,
+  unique,
   varchar,
 } from "drizzle-orm/pg-core";
-import { url } from "inspector";
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
 export const createTable = pgTableCreator((name) => `events-platform_${name}`);
 
 export const events = createTable(
@@ -46,8 +36,8 @@ export const events = createTable(
 export const users = createTable(
   "user",
   {
-    id: varchar("id").primaryKey(),
-    email: varchar("email", { length: 256 }).notNull(),
+    id: varchar("id").primaryKey().unique().notNull(),
+    email: varchar("email", { length: 256 }).unique().notNull(),
     username: varchar("username", { length: 256 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
@@ -58,5 +48,26 @@ export const users = createTable(
   },
   (example) => ({
     emailIndex: index("email_idx").on(example.email),
+  }),
+);
+
+export const registrations = createTable(
+  "registration",
+  {
+    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+    eventId: integer("event_id")
+      .references(() => events.id)
+      .notNull(),
+    userId: varchar("user_id")
+      .references(() => users.id)
+      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (example) => ({
+    eventIdIndex: index("event_id_idx").on(example.eventId),
+    userIdIndex: index("user_id_idx").on(example.userId),
+    unq: unique().on(example.eventId, example.userId),
   }),
 );

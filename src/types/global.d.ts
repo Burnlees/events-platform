@@ -8,6 +8,8 @@ declare global {
     city: string;
     country: string;
     image: string;
+    createdAt: Date;
+    updatedAt: Date | null;
   };
 }
 export {};

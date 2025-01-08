@@ -2,11 +2,13 @@ import React from "react";
 import EventCard from "./EventCard";
 
 type EventsListProps = {
-  getEvents: () => Promise<EventDetails[]>;
+  getEvents: () => Promise<EventDetails[] | undefined>;
 };
 
 const EventsList = async ({ getEvents }: EventsListProps) => {
   const events = await getEvents();
+
+  if (!events) return null;
 
   return (
     <div className="grid gap-4 xl:grid-cols-4">

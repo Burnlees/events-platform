@@ -13,17 +13,10 @@ export const postRegistration = async (userId: string, eventId: number) => {
       throw new Error(`Event not found.`);
     }
 
-    await db
-      .insert(registrations)
-      .values({
-        eventId: event.id,
-        userId,
-      })
-      .catch((err) => {
-        if (err.code === "23505") {
-          throw new Error("Already registered for this event.");
-        }
-      });
+    await db.insert(registrations).values({
+      eventId: event.id,
+      userId,
+    });
 
     return event;
   } catch (error: unknown) {

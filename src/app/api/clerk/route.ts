@@ -1,6 +1,6 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
-import { WebhookEvent } from "@clerk/nextjs/server";
+import type { WebhookEvent } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { users } from "~/server/db/schema";
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   }
 
   // Get body
-  const payload = await req.json();
+  const payload: Promise<any> = await req.json();
   const body = JSON.stringify(payload);
 
   let evt: WebhookEvent;
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
     }) as WebhookEvent;
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Error: Could not verify webhook:", err);
     return new Response("Error: Verification error", {
       status: 400,
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
       await db.insert(users).values({
         id,
         email,
-        username: evt.data.username || null,
+        username: evt.data.username ?? null,
         createdAt: new Date(evt.data.created_at),
         updatedAt: new Date(evt.data.updated_at),
       });

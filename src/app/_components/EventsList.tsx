@@ -1,13 +1,18 @@
 import React from "react";
 import EventCard from "./EventCard";
-import { db } from "~/server/db";
 
-const EventsList = async () => {
-  const events = await db.query.events.findMany();
+type EventsListProps = {
+  getEvents: () => Promise<EventDetails[] | undefined>;
+};
+
+const EventsList = async ({ getEvents }: EventsListProps) => {
+  const events = await getEvents();
+
+  if (!events) return null;
 
   return (
     <div className="grid gap-4 xl:grid-cols-4">
-      {events.map((event) => {
+      {events.map((event: EventDetails) => {
         return <EventCard key={event.id} event={event} />;
       })}
     </div>

@@ -1,17 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-
-type Event = {
-  name: string;
-  date: string;
-  time: string;
-  venue: string;
-  city: string;
-  country: string;
-  image: string;
-};
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+import ClientRSVPButton from "./ClientRSVPButton";
 
 type EventCardProps = {
-  event: Event;
+  event: EventDetails;
 };
 
 const EventCard = ({ event }: EventCardProps) => {
@@ -29,7 +26,9 @@ const EventCard = ({ event }: EventCardProps) => {
           />
           <div className="mt-4 text-sm">
             <ul className="grid grid-cols-2 gap-4">
-              <li><span className="font-bold">Date</span>: {event.date}</li>
+              <li>
+                <span className="font-bold">Date</span>: {event.date}
+              </li>
               <li>Time: {event.time}</li>
               <li className="col-span-2">Venue: {event.venue}</li>
               <li className="col-span-2">
@@ -38,6 +37,9 @@ const EventCard = ({ event }: EventCardProps) => {
             </ul>
           </div>
         </CardContent>
+        <CardFooter className="flex justify-end">
+          <ClientRSVPButton eventId={event.id} />
+        </CardFooter>
       </Card>
     </div>
   );

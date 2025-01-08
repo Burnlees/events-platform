@@ -1,6 +1,8 @@
 import { myEventsAction } from "~/actions";
 import EventsList from "../_components/EventsList";
 
+const dynamic = "force-dynamic";
+
 const MyEvents = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">

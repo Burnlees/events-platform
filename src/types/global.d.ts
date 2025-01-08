@@ -1,3 +1,5 @@
+export type Roles = "admin" | "moderator";
+
 declare global {
   type EventDetails = {
     id: number;
@@ -11,5 +13,10 @@ declare global {
     createdAt: Date;
     updatedAt: Date | null;
   };
+  interface CustomJwtSessionClaims {
+    metadata: {
+      role?: Roles;
+    };
+  }
 }
 export {};

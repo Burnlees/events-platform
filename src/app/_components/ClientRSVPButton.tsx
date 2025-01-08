@@ -12,6 +12,7 @@ type clientRSVPButtonProps = {
 const ClientRSVPButton = ({ eventId }: clientRSVPButtonProps) => {
   const { toast } = useToast();
   const pathName = usePathname();
+  
 
   const handleRSVP = async () => {
     try {

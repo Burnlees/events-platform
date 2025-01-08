@@ -1,21 +1,16 @@
 import { db } from "./db";
 import { registrations } from "./db/schema";
 
-export const postRegistration = async (
-  userId: string,
-  eventName: string,
-  eventDate: string,
-) => {
+export const postRegistration = async (userId: string, eventId: number) => {
   try {
     const event = await db.query.events.findFirst({
-      where: (model, { eq }) =>
-        eq(model.name, eventName) && eq(model.date, eventDate),
+      where: (model, { eq }) => eq(model.id, eventId),
     });
 
+    console.log(event);
+
     if (!event) {
-      throw new Error(
-        `Event not found: No event matches name '${eventName}' and date '${eventDate}'.`,
-      );
+      throw new Error(`Event not found.`);
     }
 
     await db
@@ -26,12 +21,18 @@ export const postRegistration = async (
       })
       .catch((err) => {
         if (err.code === "23505") {
-          throw new Error("Already registered.");
+          throw new Error("Already registered for this event.");
         }
       });
 
     return event;
-  } catch (error: any) {
-    throw new Error(error.message || "An unexpected error occurred.");
+  } catch (error: unknown) {
+    if (error && typeof error === "object" && "code" in error) {
+      if (error.code === "23505") {
+        throw new Error("You are already registered for this event.");
+      }
+    } else if (error instanceof Error) {
+      throw new Error(error.message || "An unexpected error occurred.");
+    }
   }
 };

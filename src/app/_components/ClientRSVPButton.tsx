@@ -1,38 +1,43 @@
 "use client";
 
-import { registerForEvent } from "~/actions";
+import { usePathname } from "next/navigation";
+import { registerEventAction } from "~/actions";
 import { Button } from "~/components/ui/button";
 import { useToast } from "~/hooks/use-toast";
 
 type clientRSVPButtonProps = {
-  eventName: string;
-  eventDate: string;
+  eventId: number;
 };
 
-const ClientRSVPButton = ({ eventName, eventDate }: clientRSVPButtonProps) => {
+const ClientRSVPButton = ({ eventId }: clientRSVPButtonProps) => {
   const { toast } = useToast();
+  const pathName = usePathname();
 
   const handleRSVP = async () => {
     try {
-      const response = await registerForEvent(eventName, eventDate);
+      const response = await registerEventAction(eventId);
       toast({
         title: "Success",
-        description: response.message,
+        description: response?.message,
       });
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
     }
   };
 
   return (
     <div>
-      <Button onClick={handleRSVP} size={"sm"}>
-        RSVP
-      </Button>
+      {pathName === "/my-events" ? null : (
+        <Button onClick={handleRSVP} size={"sm"}>
+          RSVP
+        </Button>
+      )}
     </div>
   );
 };

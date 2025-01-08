@@ -2,7 +2,7 @@ import React from "react";
 import EventCard from "./EventCard";
 
 type EventsListProps = {
-  getEvents: () => Promise<any>;
+  getEvents: () => Promise<EventDetails[]>;
 };
 
 const EventsList = async ({ getEvents }: EventsListProps) => {

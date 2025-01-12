@@ -31,10 +31,19 @@ export const createEventAction = ac
 export const deleteEventAction = ac
   .schema(deleteEventSchema)
   .action(async ({ parsedInput }) => {
-    const deletedEvent = await db
+    const { id } = parsedInput;
+
+    const response = await db
       .delete(events)
-      .where(eq(events.id, parsedInput.id))
+      .where(eq(events.id, id))
       .returning();
+
+    if (response.length === 0) {
+      throw new Error(`Event with ID ${id} not found.`);
+    }
+
+    const deletedEvent = response[0] as EventDetails;
+
     return {
       success: true,
       eventDetails: deletedEvent,
@@ -44,10 +53,16 @@ export const deleteEventAction = ac
 export const deleteMultipleEventsAction = ac
   .schema(deleteMultipleEventsSchema)
   .action(async ({ parsedInput }) => {
-    const deletedEvents = await db
+    const response = await db
       .delete(events)
       .where(inArray(events.id, parsedInput))
       .returning();
+
+    if (response.length === 0) {
+      throw new Error(`Events not found.`);
+    }
+
+    const deletedEvents = response as EventDetails[];
 
     return {
       success: true,

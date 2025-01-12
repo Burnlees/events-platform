@@ -1,6 +1,6 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, Row } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { Button } from "~/components/ui/button";
@@ -16,6 +16,55 @@ import {
 import { deleteEventAction } from "../../actions";
 import { useRouter } from "next/navigation";
 import { useToast } from "~/hooks/use-toast";
+import { extractErrorMessage } from "~/lib/utils";
+
+const ActionCell = ({ row }: { row: Row<EventDetails> }) => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const event = row.original;
+  const { execute } = useAction(deleteEventAction, {
+    onSuccess: ({ data }) => {
+      toast({
+        title: "Success",
+        description: `Event "${data?.eventDetails.name}" has been deleted.`,
+      });
+      router.refresh();
+    },
+    onError: ({ error }) => {
+      const errorMessage = extractErrorMessage(error);
+
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+      router.refresh();
+    },
+  });
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            execute({ id: event.id });
+          }}
+        >
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 export const columns: ColumnDef<EventDetails>[] = [
   {
@@ -90,39 +139,6 @@ export const columns: ColumnDef<EventDetails>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const router = useRouter();
-      const { toast } = useToast();
-      const event = row.original;
-      const { execute, result } = useAction(deleteEventAction, {
-        onSuccess: ({ data }) => {
-          toast({ title: "Success" });
-          router.refresh();
-        },
-      });
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                execute({ id: event.id });
-              }}
-            >
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ActionCell,
   },
 ];

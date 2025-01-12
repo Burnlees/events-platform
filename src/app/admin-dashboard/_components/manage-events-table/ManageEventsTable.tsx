@@ -34,6 +34,7 @@ import {
 import { deleteMultipleEventsAction } from "../../actions";
 import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { extractErrorMessage } from "~/lib/utils";
 
 interface ManageEventsTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -57,6 +58,16 @@ const ManageEventsTable = <TData, TValue>({
         description: `${data?.numberOfDeletedEvents} events successfully deleted.`,
       });
       setRowSelection({});
+      router.refresh();
+    },
+    onError: ({ error }) => {
+      const errorMessage = extractErrorMessage(error);
+
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
       router.refresh();
     },
   });

@@ -5,13 +5,13 @@ import { ac } from "~/lib/safe-action";
 import { db } from "~/server/db";
 import { events } from "~/server/db/schema";
 import {
-  createEventSchema,
-  deleteEventSchema,
+  eventsFormSchema,
+  eventByIdSchema,
   deleteMultipleEventsSchema,
 } from "~/validations";
 
 export const createEventAction = ac
-  .schema(createEventSchema)
+  .schema(eventsFormSchema)
   .action(async ({ parsedInput }) => {
     await db.insert(events).values({
       name: parsedInput.name,
@@ -28,8 +28,37 @@ export const createEventAction = ac
     };
   });
 
+export const editEventAction = ac
+  .schema(eventsFormSchema)
+  .action(async ({ parsedInput }) => {
+    const { id } = parsedInput;
+
+    if (!id) {
+      throw new Error(`No ID present in request.`);
+    }
+
+    const response = await db
+      .update(events)
+      .set(parsedInput)
+      .where(eq(events.id, id))
+      .returning();
+
+    if (response.length === 0) {
+      throw new Error(`Event with ID ${id} not found.`);
+    }
+
+    const updatedEvent = response[0] as EventDetails;
+
+    console.log(updatedEvent);
+
+    return {
+      success: true,
+      eventDetails: updatedEvent,
+    };
+  });
+
 export const deleteEventAction = ac
-  .schema(deleteEventSchema)
+  .schema(eventByIdSchema)
   .action(async ({ parsedInput }) => {
     const { id } = parsedInput;
 

@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  ColumnDef,
-  ColumnFiltersState,
+  type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
   useReactTable,
-  VisibilityState,
+  type VisibilityState,
 } from "@tanstack/react-table";
 import { Trash2Icon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
@@ -51,7 +51,7 @@ const ManageEventsTable = <TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const { execute, result } = useAction(deleteMultipleEventsAction, {
+  const { execute } = useAction(deleteMultipleEventsAction, {
     onSuccess: ({ data }) => {
       toast({
         title: "Success",

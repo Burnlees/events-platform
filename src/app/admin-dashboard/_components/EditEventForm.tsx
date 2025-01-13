@@ -10,7 +10,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
-import { createEventAction } from "../actions";
+import { editEventAction } from "../actions";
 import { eventsFormSchema } from "~/validations";
 import { Button } from "~/components/ui/button";
 import { format } from "date-fns";
@@ -25,20 +25,26 @@ import { cn, extractErrorMessage } from "~/lib/utils";
 import { useToast } from "~/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import ProgressBar from "~/app/_components/ProgressBar";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const CreateEventForm = () => {
+type EditEventFormProps = {
+  selectedEventDetails: EventDetails;
+};
+
+const EditEventForm = ({ selectedEventDetails }: EditEventFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
   const { form, action, handleSubmitWithAction, resetFormAndAction } =
-    useHookFormAction(createEventAction, zodResolver(eventsFormSchema), {
+    useHookFormAction(editEventAction, zodResolver(eventsFormSchema), {
       actionProps: {
         onSuccess: ({ data }) => {
           toast({
             title: "Success",
-            description: `Event ${data?.name} has been created.`,
+            description: `Event ${data?.eventDetails.name} has been edited.`,
           });
           resetFormAndAction();
+          router.push("/admin-dashboard/manage-events");
         },
         onError: ({ error }) => {
           const errorMessage = extractErrorMessage(error);
@@ -52,9 +58,14 @@ const CreateEventForm = () => {
         },
       },
       formProps: {
+        defaultValues: selectedEventDetails,
         mode: "onChange",
       },
     });
+
+  useEffect(() => {
+    if (selectedEventDetails) form.setValue("id", selectedEventDetails.id);
+  }, [selectedEventDetails, form]);
 
   if (action.isPending) return <ProgressBar />;
 
@@ -220,4 +231,4 @@ const CreateEventForm = () => {
   );
 };
 
-export default CreateEventForm;
+export default EditEventForm;

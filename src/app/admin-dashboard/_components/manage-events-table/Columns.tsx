@@ -17,6 +17,7 @@ import { deleteEventAction } from "../../actions";
 import { useRouter } from "next/navigation";
 import { useToast } from "~/hooks/use-toast";
 import { extractErrorMessage } from "~/lib/utils";
+import Link from "next/link";
 
 const ActionCell = ({ row }: { row: Row<EventDetails> }) => {
   const router = useRouter();
@@ -53,7 +54,9 @@ const ActionCell = ({ row }: { row: Row<EventDetails> }) => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <Link href={`/admin-dashboard/edit-event/${event.id}`}>
+          <DropdownMenuItem>Edit</DropdownMenuItem>
+        </Link>
         <DropdownMenuItem
           onClick={() => {
             execute({ id: event.id });

@@ -1,6 +1,7 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
+import AdminButton from "./AdminButton";
 
 export const TopNav = () => {
   return (
@@ -19,6 +20,7 @@ export const TopNav = () => {
             <Button size={"sm"}>
               <Link href={"/my-events"}>My Events</Link>
             </Button>
+            <AdminButton />
             <UserButton />
           </div>
         </SignedIn>

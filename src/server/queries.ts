@@ -7,6 +7,24 @@ export const getAllEvents = async () => {
   return events;
 };
 
+export const getEventById = async (id: number) => {
+  try {
+    const response = await db.select().from(events).where(eq(events.id, id));
+
+    if (response.length === 0) {
+      throw new Error("No event found.");
+    }
+    if (response[0]) {
+      const selectedEvent: EventDetails = response[0];
+      return selectedEvent;
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+};
+
 export const getMyEvents = async (userId: string) => {
   const myEvents = await db
     .select({ event: events })

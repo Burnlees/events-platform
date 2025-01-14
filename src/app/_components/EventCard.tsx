@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import ClientRSVPButton from "./ClientRSVPButton";
+import AddToCalanderButton from "./AddToCalanderButton";
 
 type EventCardProps = {
   event: EventDetails;
@@ -37,7 +38,8 @@ const EventCard = ({ event }: EventCardProps) => {
             </ul>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end">
+        <CardFooter className="flex justify-between">
+          <AddToCalanderButton eventDetails={event} />
           <ClientRSVPButton eventId={event.id} />
         </CardFooter>
       </Card>

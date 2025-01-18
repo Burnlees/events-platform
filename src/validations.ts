@@ -16,3 +16,12 @@ export const eventByIdSchema = z.object({
 });
 
 export const deleteMultipleEventsSchema = z.array(z.number());
+
+export const addToCalendarSchema = z.object({
+  id: z.number(),
+  name: z.string().min(3).max(256),
+  date: z.string().date().min(3).max(256),
+  time: z.string().time().min(3).max(256),
+  venue: z.string().min(3).max(256),
+  city: z.string().min(3).max(256),
+});

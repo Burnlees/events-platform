@@ -7,6 +7,7 @@ import { AddToCalanderAction } from "~/actions";
 import { Button } from "~/components/ui/button";
 import { useToast } from "~/hooks/use-toast";
 import { extractErrorMessage } from "~/lib/utils";
+import LoadingSpinner from "./LoadingSpinner";
 
 type AddToCalanderButtonProps = {
   eventDetails: EventDetails;
@@ -38,8 +39,8 @@ const AddToCalanderButton = ({ eventDetails }: AddToCalanderButtonProps) => {
 
   return (
     <div>
-      <Button size={"sm"} onClick={handleClick}>
-        <Calendar1Icon />
+      <Button size={"sm"} onClick={handleClick} disabled={isPending}>
+        {isPending ? <LoadingSpinner /> : <Calendar1Icon />}
       </Button>
     </div>
   );

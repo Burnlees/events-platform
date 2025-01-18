@@ -7,6 +7,8 @@ import {
 } from "~/components/ui/card";
 import ClientRSVPButton from "./ClientRSVPButton";
 import AddToCalanderButton from "./AddToCalanderButton";
+import Image from "next/image";
+import { AspectRatio } from "~/components/ui/aspect-ratio";
 
 type EventCardProps = {
   event: EventDetails;
@@ -20,11 +22,15 @@ const EventCard = ({ event }: EventCardProps) => {
           <CardTitle>{event.name}</CardTitle>
         </CardHeader>
         <CardContent>
-          <img
-            src={event.image}
-            alt={event.name}
-            className="w-full rounded-md"
-          />
+          <AspectRatio ratio={16 / 9}>
+            <Image
+              src={event.image}
+              alt={event.name}
+              width={400}
+              height={600}
+              className="h-44 w-full rounded-md object-cover"
+            />
+          </AspectRatio>
           <div className="mt-4 text-sm">
             <ul className="grid grid-cols-2 gap-4">
               <li>

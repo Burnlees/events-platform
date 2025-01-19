@@ -10,8 +10,8 @@ declare global {
     city: string;
     country: string;
     image: string;
-    createdAt: Date;
-    updatedAt: Date | null;
+    createdAt: Date | string
+    updatedAt: Date | string | null;
   };
   interface CustomJwtSessionClaims {
     metadata: {

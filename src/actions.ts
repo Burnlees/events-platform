@@ -9,6 +9,7 @@ import { getGoogleAccessToken } from "./lib/AccessToken";
 import { google } from "googleapis";
 import { addToCalendarSchema } from "./validations";
 import { checkIfEventExists } from "./lib/check-if-event-exists";
+import { filterRegisteredEvents } from "./lib/filter-registered-events";
 
 export const allEventsAction = async (): Promise<
   EventDetails[] | undefined
@@ -16,9 +17,9 @@ export const allEventsAction = async (): Promise<
   try {
     const events = await getAllEvents();
     if (events) {
-      return events.filter((event): event is EventDetails => event !== null);
+      const unregisteredEvents = await filterRegisteredEvents(events);
+      return unregisteredEvents.filter((event: EventDetails) => event !== null);
     }
-    return events;
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw new Error(error.message);
@@ -36,7 +37,7 @@ export const myEventsAction = async (): Promise<EventDetails[] | undefined> => {
 
     const events = await getMyEvents(user.userId);
     if (events) {
-      return events.filter((event): event is EventDetails => event !== null);
+      return events.filter((event: EventDetails) => event !== null);
     }
   } catch (error: unknown) {
     if (error instanceof Error) {

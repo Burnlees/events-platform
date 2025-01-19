@@ -1,5 +1,6 @@
 import React from "react";
 import EventCard from "./EventCard";
+import { currentUser } from "@clerk/nextjs/server";
 
 type EventsListProps = {
   getEvents: () => Promise<EventDetails[] | undefined>;

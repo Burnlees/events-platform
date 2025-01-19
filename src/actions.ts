@@ -7,7 +7,7 @@ import { getAllEvents, getMyEvents } from "./server/queries";
 import { ac } from "./lib/safe-action";
 import { getGoogleAccessToken } from "./lib/AccessToken";
 import { google } from "googleapis";
-import { addToCalendarSchema } from "./validations";
+import { addToCalendarSchema, eventByIdSchema } from "./validations";
 import { checkIfEventExists } from "./lib/check-if-event-exists";
 import { filterRegisteredEvents } from "./lib/filter-registered-events";
 
@@ -46,26 +46,23 @@ export const myEventsAction = async (): Promise<EventDetails[] | undefined> => {
   }
 };
 
-export const registerEventAction = async (eventId: number) => {
-  try {
+export const registerEventAction = ac
+  .schema(eventByIdSchema)
+  .action(async ({ parsedInput }) => {
+    const { id } = parsedInput;
     const user = await auth();
 
     if (!user.userId) {
       throw new Error("Unauthorized: User is not authenticated.");
     }
 
-    const event = await postRegistration(user.userId, eventId);
+    const event = await postRegistration(user.userId, id);
 
     return {
       success: true,
-      message: `Successfully registered for event '${event?.name}' on '${event?.date}'.`,
-      eventId: event?.id,
+      eventDetails: event,
     };
-  } catch (error: unknown) {
-    if (error instanceof Error)
-      throw new Error(error.message || "An unexpected error occurred.");
-  }
-};
+  });
 
 export const AddToCalanderAction = ac
   .schema(addToCalendarSchema)

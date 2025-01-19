@@ -1,9 +1,12 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useAction } from "next-safe-action/hooks";
+import { usePathname, useRouter } from "next/navigation";
 import { registerEventAction } from "~/actions";
 import { Button } from "~/components/ui/button";
 import { useToast } from "~/hooks/use-toast";
+import { extractErrorMessage } from "~/lib/utils";
+import LoadingSpinner from "./LoadingSpinner";
 
 type clientRSVPButtonProps = {
   eventId: number;
@@ -11,32 +14,37 @@ type clientRSVPButtonProps = {
 
 const ClientRSVPButton = ({ eventId }: clientRSVPButtonProps) => {
   const { toast } = useToast();
+  const router = useRouter();
   const pathName = usePathname();
-  
-
-  const handleRSVP = async () => {
-    try {
-      const response = await registerEventAction(eventId);
+  const { execute, isPending } = useAction(registerEventAction, {
+    onSuccess: ({ data }) => {
       toast({
         title: "Success",
-        description: response?.message,
+        description: `Registered for ${data?.eventDetails?.name}`,
       });
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-    }
+      router.refresh();
+    },
+    onError: ({ error }) => {
+      const errorMessage = extractErrorMessage(error);
+
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+      router.refresh();
+    },
+  });
+
+  const handleRSVP = async () => {
+    execute({ id: eventId });
   };
 
   return (
     <div>
       {pathName === "/my-events" ? null : (
-        <Button onClick={handleRSVP} size={"sm"}>
-          RSVP
+        <Button onClick={handleRSVP} size={"sm"} disabled={isPending}>
+          {isPending ? <LoadingSpinner /> : "RSVP"}
         </Button>
       )}
     </div>

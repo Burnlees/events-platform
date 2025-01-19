@@ -34,5 +34,5 @@ export const getMyEvents = async (userId: string) => {
 
   const eventData = myEvents.map((entry) => entry.event);
 
-  return eventData;
+  return eventData as EventDetails[];
 };

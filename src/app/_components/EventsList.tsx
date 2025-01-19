@@ -1,6 +1,5 @@
 import React from "react";
 import EventCard from "./EventCard";
-import { currentUser } from "@clerk/nextjs/server";
 
 type EventsListProps = {
   getEvents: () => Promise<EventDetails[] | undefined>;
@@ -9,7 +8,7 @@ type EventsListProps = {
 const EventsList = async ({ getEvents }: EventsListProps) => {
   const events = await getEvents();
 
-  if (!events) return null;
+  if (!events) return <div>No events found.</div>;
 
   return (
     <div className="grid gap-4 xl:grid-cols-4">

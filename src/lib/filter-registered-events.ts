@@ -10,11 +10,13 @@ export const filterRegisteredEvents = async (allEvents: EventDetails[]) => {
 
   const registeredEvents = await getMyEvents(user.id);
 
-  const registeredEventsIds = registeredEvents.map((event) => event.id);
+  if (registeredEvents) {
+    const registeredEventsIds = registeredEvents.map((event) => event.id);
 
-  const unregisteredEvents = allEvents.filter(
-    (event) => !registeredEventsIds.includes(event.id),
-  );
+    const unregisteredEvents = allEvents.filter(
+      (event) => !registeredEventsIds.includes(event.id),
+    );
 
-  return unregisteredEvents;
+    return unregisteredEvents;
+  }
 };

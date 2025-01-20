@@ -2,12 +2,10 @@ import React from "react";
 import EventCard from "./EventCard";
 
 type EventsListProps = {
-  getEvents: () => Promise<EventDetails[] | undefined>;
+  events: EventDetails[] | undefined;
 };
 
-const EventsList = async ({ getEvents }: EventsListProps) => {
-  const events = await getEvents();
-
+const EventsList = async ({ events }: EventsListProps) => {
   if (!events) return <div>No events found.</div>;
 
   return (

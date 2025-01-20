@@ -3,48 +3,11 @@
 import "server-only";
 import { postRegistration } from "./server/mutations";
 import { auth } from "@clerk/nextjs/server";
-import { getAllEvents, getMyEvents } from "./server/queries";
 import { ac } from "./lib/safe-action";
 import { getGoogleAccessToken } from "./lib/AccessToken";
 import { google } from "googleapis";
 import { addToCalendarSchema, eventByIdSchema } from "./validations";
 import { checkIfEventExists } from "./lib/check-if-event-exists";
-import { filterRegisteredEvents } from "./lib/filter-registered-events";
-
-export const allEventsAction = async (): Promise<
-  EventDetails[] | undefined
-> => {
-  try {
-    const events = await getAllEvents();
-    if (events) {
-      const unregisteredEvents = await filterRegisteredEvents(events);
-      return unregisteredEvents.filter((event: EventDetails) => event !== null);
-    }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-  }
-};
-
-export const myEventsAction = async (): Promise<EventDetails[] | undefined> => {
-  try {
-    const user = await auth();
-
-    if (!user.userId) {
-      throw new Error("Unauthorized: User is not authenticated.");
-    }
-
-    const events = await getMyEvents(user.userId);
-    if (events) {
-      return events.filter((event: EventDetails) => event !== null);
-    }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-  }
-};
 
 export const registerEventAction = ac
   .schema(eventByIdSchema)

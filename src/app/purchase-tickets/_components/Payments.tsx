@@ -8,11 +8,6 @@ import { env } from "~/env";
 import CheckoutForm from "../_components/CheckoutForm";
 import TicketQuantityPicker from "./TicketQuantityPicker";
 
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
-const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-
 type PaymentsProps = {
   eventDetails: EventDetails;
 };
@@ -20,6 +15,8 @@ type PaymentsProps = {
 interface StripeResponse {
   clientSecret: string;
 }
+
+const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const Payments = ({ eventDetails }: PaymentsProps) => {
   const [clientSecret, setClientSecret] = useState("");

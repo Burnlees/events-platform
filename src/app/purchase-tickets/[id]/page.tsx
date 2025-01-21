@@ -10,6 +10,7 @@ import {
 import { Suspense } from "react";
 import { getEventById } from "~/server/queries";
 
+
 export default async function PurchaseTicketsPage({
   params,
 }: {

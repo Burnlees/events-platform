@@ -1,7 +1,7 @@
 "use client";
 
 import { useAction } from "next-safe-action/hooks";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { registerEventAction } from "~/actions";
 import { Button } from "~/components/ui/button";
 import { useToast } from "~/hooks/use-toast";
@@ -15,7 +15,6 @@ type clientRSVPButtonProps = {
 const ClientRSVPButton = ({ eventId }: clientRSVPButtonProps) => {
   const { toast } = useToast();
   const router = useRouter();
-  const pathName = usePathname();
   const { execute, isPending } = useAction(registerEventAction, {
     onSuccess: ({ data }) => {
       toast({
@@ -42,11 +41,9 @@ const ClientRSVPButton = ({ eventId }: clientRSVPButtonProps) => {
 
   return (
     <div>
-      {pathName === "/my-events" ? null : (
-        <Button onClick={handleRSVP} size={"sm"} disabled={isPending}>
-          {isPending ? <LoadingSpinner /> : "RSVP"}
-        </Button>
-      )}
+      <Button onClick={handleRSVP} size={"sm"} disabled={isPending}>
+        {isPending ? <LoadingSpinner /> : "RSVP"}
+      </Button>
     </div>
   );
 };

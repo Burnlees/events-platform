@@ -5,6 +5,7 @@ const isAdminRoute = createRouteMatcher(["/admin-dashboard(.*)"]);
 const isProtectedRoute = createRouteMatcher([
   "/purchase-tickets(.*)",
   "/my-events(.*)",
+  "/payment-status(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {

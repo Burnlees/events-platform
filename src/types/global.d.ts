@@ -10,7 +10,7 @@ declare global {
     city: string;
     country: string;
     image: string;
-    createdAt: Date | string
+    createdAt: Date | string;
     updatedAt: Date | string | null;
   };
   interface CustomJwtSessionClaims {
@@ -18,5 +18,11 @@ declare global {
       role?: Roles;
     };
   }
+  type OrderDetails = {
+    id: number;
+    eventName: string;
+    quantity: number;
+    price: number;
+  };
 }
 export {};

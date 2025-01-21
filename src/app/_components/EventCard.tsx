@@ -19,7 +19,7 @@ const EventCard = ({ event }: EventCardProps) => {
     <div>
       <Card className="h-full">
         <CardHeader>
-          <CardTitle>{event.name}</CardTitle>
+          <CardTitle className="text-sm">{event.name}</CardTitle>
         </CardHeader>
         <CardContent>
           <AspectRatio ratio={16 / 9}>
@@ -32,19 +32,24 @@ const EventCard = ({ event }: EventCardProps) => {
             />
           </AspectRatio>
           <div className="mt-4 text-sm">
-            <ul className="grid grid-cols-2 gap-4">
+            <ul className="grid grid-cols-2 gap-4 text-sm">
               <li>
                 <span className="font-bold">Date</span>: {event.date}
               </li>
-              <li>Time: {event.time}</li>
-              <li className="col-span-2">Venue: {event.venue}</li>
+              <li>
+                <span className="font-bold">Time</span>: {event.time}
+              </li>
               <li className="col-span-2">
-                City: {event.city}, {event.country}
+                <span className="font-bold">Venue</span>: {event.venue}
+              </li>
+              <li className="col-span-2">
+                <span className="font-bold">City</span>: {event.city},{" "}
+                {event.country}
               </li>
             </ul>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex justify-between border-t-2 py-4">
           <AddToCalanderButton eventDetails={event} />
           <ClientRSVPButton eventId={event.id} />
         </CardFooter>

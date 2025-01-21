@@ -39,7 +39,11 @@ const AddToCalanderButton = ({ eventDetails }: AddToCalanderButtonProps) => {
 
   return (
     <div>
-      <Button size={"sm"} onClick={handleClick} disabled={isPending}>
+      <Button
+        size={"sm"}
+        onClick={handleClick}
+        disabled={isPending}
+      >
         {isPending ? <LoadingSpinner /> : <Calendar1Icon />}
       </Button>
     </div>

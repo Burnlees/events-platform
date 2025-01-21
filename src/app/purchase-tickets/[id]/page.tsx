@@ -10,7 +10,6 @@ import {
 import { Suspense } from "react";
 import { getEventById } from "~/server/queries";
 
-
 export default async function PurchaseTicketsPage({
   params,
 }: {
@@ -27,7 +26,11 @@ export default async function PurchaseTicketsPage({
         <Suspense fallback={<ProgressBar />}>
           <Card className="w-1/2">
             <CardHeader className="overflow-hidden p-0">
-              <img className="rounded-t-md" src={eventDetails?.image}></img>
+              <img
+                className="rounded-t-md"
+                src={eventDetails?.image}
+                alt={eventDetails.image}
+              ></img>
               <CardTitle className="p-4">{eventDetails?.name}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">

@@ -4,19 +4,22 @@ import { auth } from "@clerk/nextjs/server";
 import {
   getAllEvents,
   getMyEvents,
-  getUnregisteredEvents,
+  getPaginatedAllEvents,
+  getPaginatedUnregisteredEvents,
 } from "~/server/queries";
 
-export const fetchEventsForUser = async () => {
+export const fetchEventsForUser = async (pageNumber: number) => {
   const user = await auth();
 
   if (!user.userId) {
-    const eventsData: EventDetails[] | undefined = await getAllEvents();
+    const eventsData = await getPaginatedAllEvents(pageNumber, 16);
     return eventsData;
   }
 
-  const eventsData: EventDetails[] | undefined = await getUnregisteredEvents(
+  const eventsData = await getPaginatedUnregisteredEvents(
     user.userId,
+    pageNumber,
+    16,
   );
 
   return eventsData;

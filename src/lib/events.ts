@@ -2,13 +2,16 @@
 
 import { auth } from "@clerk/nextjs/server";
 import {
-  getAllEvents,
   getMyEvents,
   getPaginatedAllEvents,
   getPaginatedUnregisteredEvents,
 } from "~/server/queries";
 
-export const fetchEventsForUser = async (pageNumber: number) => {
+export const fetchEventsForUser = async (
+  pageNumber: number,
+  orderBy: string | undefined,
+  sortBy: string | undefined,
+) => {
   const user = await auth();
 
   if (!user.userId) {
@@ -20,6 +23,8 @@ export const fetchEventsForUser = async (pageNumber: number) => {
     user.userId,
     pageNumber,
     16,
+    orderBy,
+    sortBy,
   );
 
   return eventsData;

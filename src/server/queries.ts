@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { db } from "./db";
 import { events, registrations } from "./db/schema";
-import { eq, ne, or, isNull, count } from "drizzle-orm";
+import { eq, ne, or, isNull, count, asc, desc } from "drizzle-orm";
 import { DatabaseError } from "@neondatabase/serverless";
 
 export const getAllEvents = cache(async () => {
@@ -32,6 +32,7 @@ export const getPaginatedAllEvents = cache(
       const totalPages = Math.ceil(totalCount / limit);
 
       const eventsData: EventDetails[] = await db.query.events.findMany({
+        orderBy: events.id,
         limit,
         offset,
       });
@@ -74,9 +75,41 @@ export const getUnregisteredEvents = cache(async (userId: string) => {
 });
 
 export const getPaginatedUnregisteredEvents = cache(
-  async (userId: string, page: number, limit: number) => {
+  async (
+    userId: string,
+    page: number,
+    limit: number,
+    orderBy: string | undefined,
+    sortBy: string | undefined,
+  ) => {
     try {
       const offset = (page - 1) * limit;
+      let sortByColumn;
+
+      switch (sortBy) {
+        case "name":
+          sortByColumn = events.name;
+          break;
+        case "date":
+          sortByColumn = events.date;
+          break;
+        case "venue":
+          sortByColumn = events.venue;
+          break;
+        case "city":
+          sortByColumn = events.city;
+          break;
+        default:
+          sortByColumn = events.id;
+      }
+
+      let orderByQuery;
+
+      if (!orderBy || orderBy === "asc") {
+        orderByQuery = asc(sortByColumn);
+      } else {
+        orderByQuery = desc(sortByColumn);
+      }
 
       const totalCountQuery = await db
         .select({ count: count() })
@@ -96,7 +129,7 @@ export const getPaginatedUnregisteredEvents = cache(
         .from(events)
         .leftJoin(registrations, eq(registrations.eventId, events.id))
         .where(or(ne(registrations.userId, userId), isNull(registrations)))
-        .orderBy(events.id)
+        .orderBy(orderByQuery)
         .limit(limit)
         .offset(offset);
 

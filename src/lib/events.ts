@@ -15,7 +15,12 @@ export const fetchEventsForUser = async (
   const user = await auth();
 
   if (!user.userId) {
-    const eventsData = await getPaginatedAllEvents(pageNumber, 16);
+    const eventsData = await getPaginatedAllEvents(
+      pageNumber,
+      16,
+      orderBy,
+      sortBy,
+    );
     return eventsData;
   }
 

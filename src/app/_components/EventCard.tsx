@@ -9,6 +9,8 @@ import ClientRSVPButton from "./ClientRSVPButton";
 import AddToCalanderButton from "./AddToCalanderButton";
 import Image from "next/image";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
+import SocialMedaShare from "./SocialMedaShare";
+import Link from "next/link";
 
 type EventCardProps = {
   event: EventDetails;
@@ -19,7 +21,9 @@ const EventCard = ({ event }: EventCardProps) => {
     <div>
       <Card className="h-full">
         <CardHeader>
-          <CardTitle className="text-sm">{event.name}</CardTitle>
+          <CardTitle className="text-sm">
+            <Link href={`events/${event.id}`}>{event.name}</Link>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <AspectRatio ratio={16 / 9}>
@@ -50,6 +54,7 @@ const EventCard = ({ event }: EventCardProps) => {
           </div>
         </CardContent>
         <CardFooter className="flex justify-between border-t-2 py-4">
+          <SocialMedaShare />
           <AddToCalanderButton eventDetails={event} />
           <ClientRSVPButton eventId={event.id} />
         </CardFooter>

@@ -10,6 +10,7 @@ import Image from "next/image";
 import { AspectRatio } from "~/components/ui/aspect-ratio";
 import BuyTicketsButton from "./BuyTicketsButton";
 import SocialMedaShare from "~/app/_components/SocialMedaShare";
+import Link from "next/link";
 
 type EventCardProps = {
   event: EventDetails;
@@ -20,7 +21,9 @@ const MyEventCard = ({ event }: EventCardProps) => {
     <div>
       <Card className="h-full">
         <CardHeader>
-          <CardTitle className="text-sm">{event.name}</CardTitle>
+          <CardTitle className="text-sm">
+            <Link href={`events/${event.id}`}>{event.name}</Link>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <AspectRatio ratio={16 / 9}>

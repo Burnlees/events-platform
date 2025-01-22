@@ -43,6 +43,7 @@ const AddToCalanderButton = ({ eventDetails }: AddToCalanderButtonProps) => {
         size={"sm"}
         onClick={handleClick}
         disabled={isPending}
+        variant={"outline"}
       >
         {isPending ? <LoadingSpinner /> : <Calendar1Icon />}
       </Button>

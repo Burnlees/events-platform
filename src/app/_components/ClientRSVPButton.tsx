@@ -41,7 +41,12 @@ const ClientRSVPButton = ({ eventId }: clientRSVPButtonProps) => {
 
   return (
     <div>
-      <Button onClick={handleRSVP} size={"sm"} disabled={isPending}>
+      <Button
+        onClick={handleRSVP}
+        size={"sm"}
+        disabled={isPending}
+        variant={"outline"}
+      >
         {isPending ? <LoadingSpinner /> : "RSVP"}
       </Button>
     </div>

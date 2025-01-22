@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { db } from "./db";
 import { events, registrations } from "./db/schema";
-import { eq, ne, or, isNull, count, asc, desc } from "drizzle-orm";
+import { eq, ne, or, isNull, count } from "drizzle-orm";
 import { DatabaseError } from "@neondatabase/serverless";
 import { getOrderByClause } from "~/lib/getOrderByClause";
 

@@ -1,8 +1,9 @@
 import { cache } from "react";
 import { db } from "./db";
 import { events, registrations } from "./db/schema";
-import { eq, ne, or, isNull } from "drizzle-orm";
+import { eq, ne, or, isNull, count } from "drizzle-orm";
 import { DatabaseError } from "@neondatabase/serverless";
+import { getOrderByClause } from "~/lib/getOrderByClause";
 
 export const getAllEvents = cache(async () => {
   try {
@@ -17,6 +18,46 @@ export const getAllEvents = cache(async () => {
   }
 });
 
+export const getPaginatedAllEvents = cache(
+  async (
+    page: number,
+    limit: number,
+    orderBy: string | undefined,
+    sortBy: string | undefined,
+  ) => {
+    try {
+      const offset = (page - 1) * limit;
+      const orderByClause = getOrderByClause(sortBy, orderBy);
+
+      const totalCountQuery = await db.select({ count: count() }).from(events);
+
+      if (!totalCountQuery[0]) {
+        throw new Error("No events found.");
+      }
+
+      const totalCount = totalCountQuery[0].count;
+      const totalPages = Math.ceil(totalCount / limit);
+
+      const eventsData: EventDetails[] = await db.query.events.findMany({
+        orderBy: orderByClause,
+        limit,
+        offset,
+      });
+
+      return {
+        events: eventsData,
+        totalPages,
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else if (error instanceof DatabaseError) {
+        throw new Error(error.hint);
+      }
+    }
+  },
+);
+
 export const getUnregisteredEvents = cache(async (userId: string) => {
   try {
     const unregisteredEvents = await db
@@ -26,11 +67,11 @@ export const getUnregisteredEvents = cache(async (userId: string) => {
       .where(or(ne(registrations.userId, userId), isNull(registrations)))
       .orderBy(events.id);
 
-    const eventData: EventDetails[] = unregisteredEvents.map(
+    const eventsData: EventDetails[] = unregisteredEvents.map(
       (entry) => entry.event,
     );
 
-    return eventData;
+    return eventsData;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
@@ -39,6 +80,58 @@ export const getUnregisteredEvents = cache(async (userId: string) => {
     }
   }
 });
+
+export const getPaginatedUnregisteredEvents = cache(
+  async (
+    userId: string,
+    page: number,
+    limit: number,
+    orderBy: string | undefined,
+    sortBy: string | undefined,
+  ) => {
+    try {
+      const offset = (page - 1) * limit;
+      const orderByClause = getOrderByClause(sortBy, orderBy);
+
+      const totalCountQuery = await db
+        .select({ count: count() })
+        .from(events)
+        .leftJoin(registrations, eq(registrations.eventId, events.id))
+        .where(or(ne(registrations.userId, userId), isNull(registrations)));
+
+      if (!totalCountQuery[0]) {
+        throw new Error("No events found.");
+      }
+
+      const totalCount = totalCountQuery[0].count;
+      const totalPages = Math.ceil(totalCount / limit);
+
+      const unregisteredEvents = await db
+        .select()
+        .from(events)
+        .leftJoin(registrations, eq(registrations.eventId, events.id))
+        .where(or(ne(registrations.userId, userId), isNull(registrations)))
+        .orderBy(orderByClause)
+        .limit(limit)
+        .offset(offset);
+
+      const eventsData: EventDetails[] = unregisteredEvents.map(
+        (entry) => entry.event,
+      );
+
+      return {
+        events: eventsData,
+        totalPages,
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else if (error instanceof DatabaseError) {
+        throw new Error(error.hint);
+      }
+    }
+  },
+);
 
 export const getEventById = async (
   id: number,

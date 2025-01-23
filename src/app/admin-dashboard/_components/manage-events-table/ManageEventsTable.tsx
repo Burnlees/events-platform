@@ -14,7 +14,7 @@ import {
 } from "@tanstack/react-table";
 import { Trash2Icon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -35,6 +35,8 @@ import { deleteMultipleEventsAction } from "../../actions";
 import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { extractErrorMessage } from "~/lib/utils";
+import { useMediaQuery } from "~/hooks/use-media-query";
+import { is } from "drizzle-orm";
 
 interface ManageEventsTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -106,9 +108,25 @@ const ManageEventsTable = <TData, TValue>({
     }
   };
 
+  const isMobile = useMediaQuery("(max-width: 640px)");
+
+  useEffect(() => {
+    if (isMobile) {
+      setColumnVisibility({
+        id: true,
+        name: true,
+        date: false,
+        time: false,
+        venue: false,
+        city: false,
+        country: false,
+      });
+    }
+  }, [isMobile]);
+
   return (
-    <div>
-      <div className="flex items-center py-4">
+    <div className="p-4">
+      <div className="flex gap-4 items-center py-4">
         <Input
           placeholder="Filter by name"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -147,7 +165,7 @@ const ManageEventsTable = <TData, TValue>({
           size={"sm"}
           disabled={!Object.keys(rowSelection).length}
           variant={"destructive"}
-          className="ml-4"
+          className=""
           onClick={handleDeleteSelectedRows}
         >
           <Trash2Icon />

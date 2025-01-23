@@ -21,7 +21,7 @@ const AdminDashboardPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <PlusSquare size={""} />
+                <PlusSquare size={"18rem"} />
               </CardContent>
             </Card>
           </Link>
@@ -34,7 +34,7 @@ const AdminDashboardPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Edit size={""} />
+                <Edit size={"18rem"} />
               </CardContent>
             </Card>
           </Link>

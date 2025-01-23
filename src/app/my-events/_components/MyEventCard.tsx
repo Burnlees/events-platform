@@ -25,13 +25,13 @@ const MyEventCard = ({ event }: EventCardProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-            <Image
-              src={event.image}
-              alt={event.name}
-              width={400}
-              height={600}
-              className="h-44 w-full rounded-md object-cover"
-            />
+          <Image
+            src={event.image}
+            alt={event.name}
+            width={400}
+            height={600}
+            className="h-44 w-full rounded-md object-cover"
+          />
           <div className="mt-4 text-sm">
             <ul className="grid grid-cols-2 gap-4 text-sm">
               <li>

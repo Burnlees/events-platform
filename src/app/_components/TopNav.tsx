@@ -2,6 +2,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import AdminButton from "./AdminButton";
+import MobileNavigation from "./MobileNavigation";
 
 export const TopNav = () => {
   return (
@@ -16,7 +17,10 @@ export const TopNav = () => {
           </SignInButton>
         </SignedOut>
         <SignedIn>
-          <div className="flex gap-4">
+          <div className="md:hidden">
+            <MobileNavigation />
+          </div>
+          <div className="hidden gap-4 md:flex">
             <Button size={"sm"}>
               <Link href={"/my-events"}>My Events</Link>
             </Button>

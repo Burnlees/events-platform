@@ -10,7 +10,6 @@ import {
 
 const AdminDashboardPage = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
         <div className="flex flex-col gap-4 md:flex-row md:gap-32">
           <Link href={"/admin-dashboard/create-event"}>
@@ -41,7 +40,6 @@ const AdminDashboardPage = () => {
           </Link>
         </div>
       </div>
-    </main>
   );
 };
 

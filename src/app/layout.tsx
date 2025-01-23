@@ -18,10 +18,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
-        <body>
+        <body className="flex min-h-screen flex-col">
           <TopNav />
-          {children}
-          <Toaster />
+          <main className="flex flex-grow flex-col items-center justify-center">
+            {children}
+            <Toaster />
+          </main>
         </body>
       </html>
     </ClerkProvider>

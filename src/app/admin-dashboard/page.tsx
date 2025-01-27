@@ -10,11 +10,10 @@ import {
 
 const AdminDashboardPage = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4 md:flex-row md:gap-32">
           <Link href={"/admin-dashboard/create-event"}>
-            <Card>
+            <Card className="md:w-96">
               <CardHeader>
                 <CardTitle>Create Event</CardTitle>
                 <CardDescription>
@@ -22,12 +21,12 @@ const AdminDashboardPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <PlusSquare size={""} />
+                <PlusSquare size={"18rem"} />
               </CardContent>
             </Card>
           </Link>
           <Link href={"/admin-dashboard/manage-events"}>
-            <Card>
+            <Card className="md:w-96">
               <CardHeader>
                 <CardTitle>Manage Events</CardTitle>
                 <CardDescription>
@@ -35,13 +34,12 @@ const AdminDashboardPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Edit size={""} />
+                <Edit size={"18rem"} />
               </CardContent>
             </Card>
           </Link>
         </div>
       </div>
-    </main>
   );
 };
 

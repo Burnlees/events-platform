@@ -18,20 +18,18 @@ const PaymentStatusPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <Card>
-          <CardHeader>
-            <CardTitle>Payment Status</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Elements options={options} stripe={stripePromise}>
-              <CompletePage />
-            </Elements>
-          </CardContent>
-        </Card>
-      </div>
-    </main>
+    <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
+      <Card>
+        <CardHeader>
+          <CardTitle>Payment Status</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Elements options={options} stripe={stripePromise}>
+            <CompletePage />
+          </Elements>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

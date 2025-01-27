@@ -87,6 +87,7 @@ export const columns: ColumnDef<EventDetails>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
+        className=""
       />
     ),
     enableSorting: false,
@@ -101,7 +102,7 @@ export const columns: ColumnDef<EventDetails>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="h-4 w-4" />
         </Button>
       );
     },

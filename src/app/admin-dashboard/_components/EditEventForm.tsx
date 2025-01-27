@@ -73,13 +73,13 @@ const EditEventForm = ({ selectedEventDetails }: EditEventFormProps) => {
     <div className="w-full">
       <Card className="m-auto drop-shadow-xl">
         <CardHeader>
-          <CardTitle>Create New Event</CardTitle>
+          <CardTitle>Edit Event</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form
               onSubmit={handleSubmitWithAction}
-              className="grid grid-cols-2 gap-4"
+              className="grid md:grid-cols-2 gap-4"
             >
               <FormField
                 defaultValue=""

@@ -7,7 +7,6 @@ import {
 } from "~/components/ui/card";
 import AddToCalanderButton from "../../_components/AddToCalanderButton";
 import Image from "next/image";
-import { AspectRatio } from "~/components/ui/aspect-ratio";
 import BuyTicketsButton from "./BuyTicketsButton";
 import SocialMedaShare from "~/app/_components/SocialMedaShare";
 import Link from "next/link";
@@ -26,15 +25,13 @@ const MyEventCard = ({ event }: EventCardProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <AspectRatio ratio={16 / 9}>
-            <Image
-              src={event.image}
-              alt={event.name}
-              width={400}
-              height={600}
-              className="h-44 w-full rounded-md object-cover"
-            />
-          </AspectRatio>
+          <Image
+            src={event.image}
+            alt={event.name}
+            width={400}
+            height={600}
+            className="h-44 w-full rounded-md object-cover"
+          />
           <div className="mt-4 text-sm">
             <ul className="grid grid-cols-2 gap-4 text-sm">
               <li>

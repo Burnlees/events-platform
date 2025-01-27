@@ -68,7 +68,7 @@ const CreateEventForm = () => {
           <Form {...form}>
             <form
               onSubmit={handleSubmitWithAction}
-              className="grid grid-cols-2 gap-4"
+              className="grid md:grid-cols-2 gap-4"
             >
               <FormField
                 defaultValue=""

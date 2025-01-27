@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { db } from "./db";
 import { events, registrations } from "./db/schema";
-import { eq, ne, or, isNull, count } from "drizzle-orm";
+import { eq, isNull, count, and } from "drizzle-orm";
 import { DatabaseError } from "@neondatabase/serverless";
 import { getOrderByClause } from "~/lib/getOrderByClause";
 
@@ -29,23 +29,30 @@ export const getPaginatedAllEvents = cache(
       const offset = (page - 1) * limit;
       const orderByClause = getOrderByClause(sortBy, orderBy);
 
-      const totalCountQuery = await db.select({ count: count() }).from(events);
+      const getTotalCountQuery = () =>
+        db.select({ count: count() }).from(events);
 
-      if (!totalCountQuery[0]) {
+      const getPaginatedEventsQuery = () =>
+        db.query.events.findMany({
+          orderBy: orderByClause,
+          limit,
+          offset,
+        });
+
+      const [totalCountQueryResult, eventsQueryResult] = await Promise.all([
+        getTotalCountQuery(),
+        getPaginatedEventsQuery(),
+      ]);
+
+      if (!totalCountQueryResult[0]) {
         throw new Error("No events found.");
       }
 
-      const totalCount = totalCountQuery[0].count;
+      const totalCount = totalCountQueryResult[0].count;
       const totalPages = Math.ceil(totalCount / limit);
 
-      const eventsData: EventDetails[] = await db.query.events.findMany({
-        orderBy: orderByClause,
-        limit,
-        offset,
-      });
-
       return {
-        events: eventsData,
+        events: eventsQueryResult,
         totalPages,
       };
     } catch (error) {
@@ -63,8 +70,14 @@ export const getUnregisteredEvents = cache(async (userId: string) => {
     const unregisteredEvents = await db
       .select()
       .from(events)
-      .leftJoin(registrations, eq(registrations.eventId, events.id))
-      .where(or(ne(registrations.userId, userId), isNull(registrations)))
+      .leftJoin(
+        registrations,
+        and(
+          eq(registrations.eventId, events.id),
+          eq(registrations.userId, userId),
+        ),
+      )
+      .where(isNull(registrations))
       .orderBy(events.id);
 
     const eventsData: EventDetails[] = unregisteredEvents.map(
@@ -93,29 +106,46 @@ export const getPaginatedUnregisteredEvents = cache(
       const offset = (page - 1) * limit;
       const orderByClause = getOrderByClause(sortBy, orderBy);
 
-      const totalCountQuery = await db
-        .select({ count: count() })
-        .from(events)
-        .leftJoin(registrations, eq(registrations.eventId, events.id))
-        .where(or(ne(registrations.userId, userId), isNull(registrations)));
+      const getTotalCountQuery = () =>
+        db
+          .select({ count: count() })
+          .from(events)
+          .leftJoin(
+            registrations,
+            and(
+              eq(registrations.eventId, events.id),
+              eq(registrations.userId, userId),
+            ),
+          )
+          .where(isNull(registrations));
 
-      if (!totalCountQuery[0]) {
+      const getUnregisteredEventsQuery = () =>
+        db
+          .select()
+          .from(events)
+          .leftJoin(
+            registrations,
+            and(
+              eq(registrations.eventId, events.id),
+              eq(registrations.userId, userId),
+            ),
+          )
+          .where(isNull(registrations))
+          .orderBy(orderByClause)
+          .limit(limit)
+          .offset(offset);
+
+      const [totalCountQueryResult, unregisteredEventsQueryResult] =
+        await Promise.all([getTotalCountQuery(), getUnregisteredEventsQuery()]);
+
+      if (!totalCountQueryResult[0]) {
         throw new Error("No events found.");
       }
 
-      const totalCount = totalCountQuery[0].count;
+      const totalCount = totalCountQueryResult[0].count;
       const totalPages = Math.ceil(totalCount / limit);
 
-      const unregisteredEvents = await db
-        .select()
-        .from(events)
-        .leftJoin(registrations, eq(registrations.eventId, events.id))
-        .where(or(ne(registrations.userId, userId), isNull(registrations)))
-        .orderBy(orderByClause)
-        .limit(limit)
-        .offset(offset);
-
-      const eventsData: EventDetails[] = unregisteredEvents.map(
+      const eventsData: EventDetails[] = unregisteredEventsQueryResult.map(
         (entry) => entry.event,
       );
 

@@ -13,11 +13,12 @@ export const fetchEventsForUser = async (
   sortBy: string | undefined,
 ) => {
   const user = await auth();
+  const limit = 16;
 
   if (!user.userId) {
     const eventsData = await getPaginatedAllEvents(
       pageNumber,
-      16,
+      limit,
       orderBy,
       sortBy,
     );
@@ -27,7 +28,7 @@ export const fetchEventsForUser = async (
   const eventsData = await getPaginatedUnregisteredEvents(
     user.userId,
     pageNumber,
-    16,
+    limit,
     orderBy,
     sortBy,
   );

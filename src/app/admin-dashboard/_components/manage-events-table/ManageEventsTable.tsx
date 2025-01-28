@@ -126,7 +126,7 @@ const ManageEventsTable = <TData, TValue>({
 
   return (
     <div className="p-4">
-      <div className="flex gap-4 items-center py-4">
+      <div className="flex items-center gap-4 py-4">
         <Input
           placeholder="Filter by name"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -167,6 +167,7 @@ const ManageEventsTable = <TData, TValue>({
           variant={"destructive"}
           className=""
           onClick={handleDeleteSelectedRows}
+          aria-label="Delete selected rows"
         >
           <Trash2Icon />
         </Button>

@@ -44,6 +44,7 @@ const AddToCalanderButton = ({ eventDetails }: AddToCalanderButtonProps) => {
         onClick={handleClick}
         disabled={isPending}
         variant={"outline"}
+        aria-label="Add to calendar"
       >
         {isPending ? <LoadingSpinner /> : <Calendar1Icon />}
       </Button>

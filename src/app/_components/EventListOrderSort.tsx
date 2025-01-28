@@ -37,7 +37,7 @@ const EventListOrderSort = () => {
   return (
     <div className="ml-auto flex items-center gap-4">
       <Select onValueChange={(value) => setSortBy(value)}>
-        <SelectTrigger>
+        <SelectTrigger aria-label="Sort By">
           <SelectValue placeholder="Sort By" />
         </SelectTrigger>
         <SelectContent>
@@ -49,7 +49,7 @@ const EventListOrderSort = () => {
         </SelectContent>
       </Select>
       <Select onValueChange={(value) => setOrderBy(value)}>
-        <SelectTrigger>
+        <SelectTrigger aria-label="Order By">
           <SelectValue placeholder="Order By" />
         </SelectTrigger>
         <SelectContent>

@@ -19,7 +19,7 @@ const TicketQuantityPicker = ({
   };
 
   return (
-    <div className="mx-auto flex w-1/2 gap-4">
+    <div className="mx-auto my-4 flex md:w-1/2 gap-4">
       <Label htmlFor="ticketQuantity">How many?</Label>
       <Input
         type="number"
@@ -34,7 +34,7 @@ const TicketQuantityPicker = ({
           }
         }}
       />
-      <Button onClick={handleClick}>Get Tickets</Button>
+      <Button size={"sm"} onClick={handleClick}>Get Tickets</Button>
     </div>
   );
 };

@@ -23,7 +23,7 @@ export default async function PurchaseTicketsPage({
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
       <Suspense fallback={<ProgressBar />}>
-        <Card className="w-1/2">
+        <Card className="md:w-1/2">
           <CardHeader className="overflow-hidden p-0">
             <img
               className="rounded-t-md"

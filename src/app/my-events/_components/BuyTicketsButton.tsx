@@ -11,7 +11,7 @@ const BuyTicketsButton = ({ eventId }: BuyTicketsButtonProps) => {
   return (
     <div>
       <Link href={`/purchase-tickets/${eventId}`}>
-        <Button size={"sm"} variant={"outline"}>
+        <Button size={"sm"} variant={"outline"} aria-label="Buy tickets">
           <ShoppingBasketIcon />
         </Button>
       </Link>

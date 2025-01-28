@@ -26,7 +26,7 @@ const SocialMedaShare = () => {
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger asChild>
+        <AlertDialogTrigger asChild aria-label="Share">
           <Button size={"sm"} variant={"outline"}>
             <Share2Icon />
           </Button>

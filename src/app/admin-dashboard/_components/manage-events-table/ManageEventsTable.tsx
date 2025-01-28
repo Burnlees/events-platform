@@ -36,7 +36,6 @@ import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { extractErrorMessage } from "~/lib/utils";
 import { useMediaQuery } from "~/hooks/use-media-query";
-import { is } from "drizzle-orm";
 
 interface ManageEventsTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

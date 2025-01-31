@@ -19,8 +19,7 @@ By bridging event organisers and attendees, the **NextUp Events Platform** ensur
 - **Responsive Design**: The platform is fully responsive, ensuring a seamless experience across devices, including desktops, tablets, and mobile phones.
 - **Accessibility**: Designed with accessibility in mind, the platform adheres to WCAG standards to accommodate users of all abilities.
 
-[🎥 Watch a Video Walkthrough of the Platform]() _(Coming soon...)_
-
+[🎥 Watch a Video Walkthrough of the Platform](https://youtu.be/XeOsm-Skh4o)
 ---
 ## Live Hosted Version
 

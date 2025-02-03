@@ -1,4 +1,4 @@
-import { UserButton } from "@clerk/nextjs";
+import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -8,6 +8,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -25,22 +26,29 @@ const MobileNavigation = async () => {
             <MenuIcon />
           </Button>
         </SheetTrigger>
-        <SheetContent>
-          <SheetHeader className="flex items-center justify-between">
-            <UserButton />
-            <SheetTitle className="hidden">Menu</SheetTitle>
-          </SheetHeader>
-          <Separator className="mt-4" />
-          <div className="mt-4 flex flex-col gap-4">
-            <SheetClose asChild>
-              <Link href={"my-events"}>My Events</Link>
-            </SheetClose>
-            {isAdmin && (
+        <SheetContent className="flex flex-col justify-between">
+          <div>
+            <SheetHeader className="flex items-center justify-between">
+              <UserButton />
+              <SheetTitle className="hidden">Menu</SheetTitle>
+            </SheetHeader>
+            <Separator className="mt-4" />
+            <div className="mt-4 flex flex-col gap-4">
               <SheetClose asChild>
-                <Link href={"/admin-dashboard"}>Staff Dashboard</Link>
+                <Link href={"my-events"}>My Events</Link>
               </SheetClose>
-            )}
+              {isAdmin && (
+                <SheetClose asChild>
+                  <Link href={"/admin-dashboard"}>Staff Dashboard</Link>
+                </SheetClose>
+              )}
+            </div>
           </div>
+          <SheetFooter>
+            <SignOutButton>
+              <Button variant={"destructive"}>Sign Out</Button>
+            </SignOutButton>
+          </SheetFooter>
         </SheetContent>
       </Sheet>
     </div>

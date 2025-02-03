@@ -56,10 +56,10 @@ export const registrations = createTable(
   {
     id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
     eventId: integer("event_id")
-      .references(() => events.id)
+      .references(() => events.id, { onDelete: "cascade" })
       .notNull(),
     userId: varchar("user_id")
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)

@@ -47,4 +47,5 @@ yarn-error.log*
 
 # claude
 .claude
+CLAUDE.md
 DESIGN.md

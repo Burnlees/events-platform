@@ -2,20 +2,21 @@ import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
-    darkMode: ["class"],
     content: ["./src/**/*.tsx"],
   theme: {
   	extend: {
   		fontFamily: {
   			sans: [
-  				'var(--font-geist-sans)',
+  				'var(--font-inter)',
                     ...fontFamily.sans
                 ]
   		},
   		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			pill: '9999px',
+  			xl: '40px',
+  			lg: '30px',
+  			md: '16px',
+  			sm: '10px'
   		},
   		colors: {
   			background: 'hsl(var(--background))',
@@ -51,6 +52,10 @@ export default {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
+  			'wise-green': '#9fe870',
+  			'dark-green': '#163300',
+  			'light-mint': '#e2f6d5',
+  			'warm-dark': '#0e0f0c',
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',

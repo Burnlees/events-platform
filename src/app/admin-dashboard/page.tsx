@@ -13,7 +13,7 @@ const AdminDashboardPage = () => {
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
         <div className="flex flex-col gap-4 md:flex-row md:gap-32">
           <Link href={"/admin-dashboard/create-event"}>
-            <Card className="md:w-96">
+            <Card className="md:w-96 transition-all hover:ring-primary">
               <CardHeader>
                 <CardTitle>Create Event</CardTitle>
                 <CardDescription>
@@ -26,7 +26,7 @@ const AdminDashboardPage = () => {
             </Card>
           </Link>
           <Link href={"/admin-dashboard/manage-events"}>
-            <Card className="md:w-96">
+            <Card className="md:w-96 transition-all hover:ring-primary">
               <CardHeader>
                 <CardTitle>Manage Events</CardTitle>
                 <CardDescription>

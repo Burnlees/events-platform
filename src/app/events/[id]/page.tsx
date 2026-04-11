@@ -21,11 +21,11 @@ const EventPage = async ({ params }: { params: Promise<{ id: number }> }) => {
           alt={eventDetails.name}
           width={400}
           height={600}
-          className="h-96 w-full rounded-md object-cover md:col-span-2"
+          className="h-96 w-full rounded-[30px] object-cover md:col-span-2"
         />
         <Separator className="md:col-span-2" />
         <div className="text-sm">
-          <h1 className="mb-4 text-2xl font-semibold">{eventDetails.name}</h1>
+          <h1 className="mb-4 text-4xl font-black leading-[0.85]">{eventDetails.name}</h1>
           <ul className="grid grid-cols-2 gap-4 text-sm">
             <li>
               <span className="font-bold">Date</span>: {eventDetails.date}

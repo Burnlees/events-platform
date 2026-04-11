@@ -57,7 +57,7 @@ const EventListOrderSort = () => {
           <SelectItem value="desc">Desc</SelectItem>
         </SelectContent>
       </Select>
-      <Button onClick={handleClick} size={"sm"} variant={"outline"}>
+      <Button onClick={handleClick} size={"sm"} variant={"secondary"}>
         Go
       </Button>
     </div>

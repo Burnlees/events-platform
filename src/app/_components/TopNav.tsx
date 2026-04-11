@@ -6,8 +6,8 @@ import MobileNavigation from "./MobileNavigation";
 
 export const TopNav = () => {
   return (
-    <nav className="flex w-full items-center justify-between border-b px-4 py-2 drop-shadow">
-      <div className="font-bold">
+    <nav className="flex w-full items-center justify-between border-b border-border px-6 py-3">
+      <div className="text-2xl font-black tracking-tight">
         <Link href={"/"}>NextUp</Link>
       </div>
       <div>
